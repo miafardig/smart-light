@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_settings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.mia.smartlight.activity.SettingsActivity"
+    tools:showIn="@layout/activity_settings">
+
+    <TextView
+        android:text="Network Settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:id="@+id/settings_title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+    <TextView
+        android:text="Server URL:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/settings_title"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="26dp"
+        android:id="@+id/server_label" />
+
+    <TextView
+        android:text="Router Address:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/server_label"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="26dp"
+        android:id="@+id/router_label" />
+
+    <TextView
+        android:text="Router Address 2:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/router_label"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="26dp"
+        android:id="@+id/router_label_two" />
+
+
+    <TextView
+        android:text="Choose Lamp:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/router_label_two"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="26dp"
+        android:id="@+id/lamp_label" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:layout_below="@+id/settings_title"
+        android:layout_toRightOf="@id/router_label_two"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_alignBaseline="@id/server_label"
+        android:id="@+id/edit_server" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:layout_below="@+id/edit_server"
+        android:layout_toRightOf="@id/router_label_two"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_alignBaseline="@id/router_label"
+        android:id="@+id/edit_router" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:layout_below="@+id/edit_router"
+        android:layout_toRightOf="@id/router_label_two"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_alignBaseline="@id/router_label_two"
+        android:id="@+id/edit_router_two" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_router_two"
+        android:layout_toRightOf="@id/router_label_two"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_alignBaseline="@id/lamp_label"
+        android:id="@+id/lamp_list" />
+
+</RelativeLayout>
