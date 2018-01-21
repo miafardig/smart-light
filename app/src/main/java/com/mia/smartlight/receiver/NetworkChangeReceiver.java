@@ -35,7 +35,7 @@ public class NetworkChangeReceiver extends WakefulBroadcastReceiver {
         if (intent.getAction().equals(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION) && hour > minHour && hour < maxHour) {
             if (intent.getParcelableExtra(WifiManager.EXTRA_NEW_STATE) == SupplicantState.COMPLETED) {
 
-                WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                 WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 
                 if (wifiInfo != null) {
@@ -43,7 +43,7 @@ public class NetworkChangeReceiver extends WakefulBroadcastReceiver {
                     if (connected) {
                         Log.d("Intent", "Sending intent to ConnectivityIntentService");
                         Intent service = new Intent(context, ConnectivityIntentService.class);
-                        this.startWakefulService(context, service);
+                        WakefulBroadcastReceiver.startWakefulService(context, service);
                     }
                 }
             }

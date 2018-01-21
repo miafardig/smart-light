@@ -87,7 +87,7 @@ public class AlarmActivity extends AppCompatActivity implements AdapterView.OnIt
 
                 units = (List<NexaUnit>) response;
 
-                ArrayAdapter<NexaUnit> arrayAdapter = new ArrayAdapter<NexaUnit>(AlarmActivity.this,
+                ArrayAdapter<NexaUnit> arrayAdapter = new ArrayAdapter<>(AlarmActivity.this,
                         android.R.layout.simple_spinner_item, android.R.id.text1, units);
 
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

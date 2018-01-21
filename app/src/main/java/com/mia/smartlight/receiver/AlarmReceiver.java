@@ -17,7 +17,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         Log.d("Intent", "Sending intent to AlarmIntentService");
 
         Intent service = new Intent(context, AlarmIntentService.class);
-        this.startWakefulService(context, service);
+        WakefulBroadcastReceiver.startWakefulService(context, service);
 
     }
 }

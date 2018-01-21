@@ -38,52 +38,28 @@
             android:layout_alignBaseline="@+id/name_label" />
 
         <TextView
-            android:text="Id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/id_label"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_below="@id/name_label"
-            android:labelFor="@+id/lamp_id" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="false"
-            android:id="@+id/lamp_id"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            tools:textStyle="bold"
-            android:layout_below="@+id/lamp_name"
-            android:layout_alignStart="@id/lamp_name"
-            android:layout_alignTop="@+id/id_label"
-            android:layout_alignBaseline="@+id/id_label" />
-
-        <TextView
-            android:text="On/Off"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/state_label"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_below="@id/id_label"
-            android:labelFor="@+id/lamp_state" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="false"
+            android:layout_below="@+id/name_label"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:labelFor="@+id/lamp_state"
+            android:text="On/Off"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+        <TextView
             android:id="@+id/lamp_state"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            tools:textStyle="bold"
-            android:layout_below="@+id/lamp_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/state_label"
+            android:layout_alignParentTop="false"
             android:layout_alignStart="@+id/lamp_name"
             android:layout_alignTop="@+id/state_label"
-            android:layout_alignBaseline="@+id/state_label" />
+            android:layout_below="@+id/lamp_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            tools:textStyle="bold" />
 
         <TextView
             android:text="Dim Level"
@@ -117,6 +93,18 @@
             android:layout_marginTop="20dp"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:layout_below="@+id/level_label"></LinearLayout>
+            android:layout_below="@+id/level_label">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button_group_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_group"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"></LinearLayout>
 
 </RelativeLayout>

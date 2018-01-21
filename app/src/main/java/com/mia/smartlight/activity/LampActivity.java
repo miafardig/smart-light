@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -67,8 +68,6 @@ public class LampActivity extends AppCompatActivity {
 
         TextView name = (TextView) findViewById(R.id.lamp_name);
         name.setText(unit.getName());
-        TextView id = (TextView) findViewById(R.id.lamp_id);
-        id.setText(String.valueOf(unit.getId()));
 
         addStateAndDimLevel();
         addButtons();
@@ -92,27 +91,30 @@ public class LampActivity extends AppCompatActivity {
 
     private void addButtons() {
         LinearLayout buttonGroup = (LinearLayout) findViewById(R.id.button_group);
+        LinearLayout buttonGroup2 = (LinearLayout) findViewById(R.id.button_group_2);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((buttonGroup.getWidth()/2), ViewGroup.LayoutParams.WRAP_CONTENT);
 
         on = new Button(this);
         on.setText("On");
-        on.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        on.setLayoutParams(params);
         buttonGroup.addView(on);
         off = new Button(this);
         off.setText("Off");
-        off.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        off.setLayoutParams(params);
         buttonGroup.addView(off);
 
         for (String s : unit.getActions()) {
             if (s.equalsIgnoreCase("dim")) {
                 dim = new Button(this);
                 dim.setText("Dim");
-                dim.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                buttonGroup.addView(dim);
+                dim.setLayoutParams(new LinearLayout.LayoutParams(params));
+                buttonGroup2.addView(dim);
             } else if (s.equalsIgnoreCase("bright")) {
                 bright = new Button(this);
                 bright.setText("Bright");
-                bright.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                buttonGroup.addView(bright);
+                bright.setLayoutParams(new LinearLayout.LayoutParams(params));
+                buttonGroup2.addView(bright);
             }
         }
     }

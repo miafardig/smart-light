@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SmartLight.iml" filepath="$PROJECT_DIR$/SmartLight.iml" />
+      <module fileurl="file://C:\Users\maria\StudioProjects\smart-light\SmartLight.iml" filepath="C:\Users\maria\StudioProjects\smart-light\SmartLight.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\maria\StudioProjects\smart-light\app\app.iml" filepath="C:\Users\maria\StudioProjects\smart-light\app\app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/smart-light.iml" filepath="$PROJECT_DIR$/smart-light.iml" />
     </modules>
   </component>
 </project>
