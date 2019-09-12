@@ -1,5 +1,6 @@
 package com.mia.smartlight.receiver;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
@@ -7,7 +8,7 @@ import android.util.Log;
 
 import com.mia.smartlight.service.AlarmIntentService;
 
-public class AlarmReceiver extends WakefulBroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -17,7 +18,6 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         Log.d("Intent", "Sending intent to AlarmIntentService");
 
         Intent service = new Intent(context, AlarmIntentService.class);
-        WakefulBroadcastReceiver.startWakefulService(context, service);
-
+        AlarmIntentService.enqueueWork(context, service);
     }
 }

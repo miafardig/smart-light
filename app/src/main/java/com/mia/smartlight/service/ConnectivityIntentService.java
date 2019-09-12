@@ -1,9 +1,11 @@
 package com.mia.smartlight.service;
 
-import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,27 +15,29 @@ import com.mia.smartlight.activity.MainActivity;
 import com.mia.smartlight.model.Attribute;
 import com.mia.smartlight.model.NexaUnit;
 import com.mia.smartlight.model.UserConfig;
-import com.mia.smartlight.receiver.NetworkChangeReceiver;
 
 import java.util.List;
 
-public class ConnectivityIntentService extends IntentService {
+public class ConnectivityIntentService extends JobIntentService {
 
     private UserConfig userConfig;
     private NexaUnit unit;
     private List<Attribute> attributes;
-
-    public ConnectivityIntentService(String name) {
-        super(name);
-    }
+    static final int JOB_ID = 1000;
+    static final String CHANNEL_ID = "ConnectivityIntentService";
 
     public ConnectivityIntentService() {
-        super("ConnectivityIntentService");
+        super();
     }
 
+    /**
+     * Convenience method for enqueuing work in to this service.
+     */
+    public static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, ConnectivityIntentService.class, JOB_ID, work);
+    }
     @Override
-    protected void onHandleIntent(Intent intent) {
-
+    public void onHandleWork(@NonNull Intent intent) {
         Log.d("Class", "ConnectivityIntentService");
         Log.d("Intent", "Handling intent " + intent.toString());
 
@@ -45,7 +49,6 @@ public class ConnectivityIntentService extends IntentService {
             turnUnitOn(intent, id);
         } else {
             Toast.makeText(this, "No lamp id is provided. Please set this in 'Settings'", Toast.LENGTH_LONG).show();
-            NetworkChangeReceiver.completeWakefulIntent(intent);
         }
     }
 
@@ -56,7 +59,6 @@ public class ConnectivityIntentService extends IntentService {
             public void onError(String message) {
                 if (message.equals(NexaService.FLAG)) {
                     Toast.makeText(ConnectivityIntentService.this, "No server URL provided, please set this in 'Settings'", Toast.LENGTH_LONG).show();
-                    NetworkChangeReceiver.completeWakefulIntent(intent);
                 } else {
                     Toast.makeText(ConnectivityIntentService.this, "Could not connect to server", Toast.LENGTH_SHORT).show();
                     //needs to retry, since there may not be a stable internet connection during first call
@@ -76,7 +78,6 @@ public class ConnectivityIntentService extends IntentService {
                         invokeActionOnServer(intent, id);
                     } else if(a.getName().equalsIgnoreCase("state") && a.getValue().equalsIgnoreCase("on")) {
                         Log.d("Request", "Unit is already on");
-                        NetworkChangeReceiver.completeWakefulIntent(intent);
                     }
                 }
             }
@@ -89,7 +90,6 @@ public class ConnectivityIntentService extends IntentService {
             public void onError(String message) {
                 if (message.equals(NexaService.FLAG)) {
                     Toast.makeText(ConnectivityIntentService.this, "No server URL provided, please set this in 'Settings'", Toast.LENGTH_LONG).show();
-                    NetworkChangeReceiver.completeWakefulIntent(intent);
                 } else {
                     Toast.makeText(ConnectivityIntentService.this, "Could not connect to server", Toast.LENGTH_SHORT).show();
                     //needs to retry, since there may not be a stable internet connection during first call
@@ -101,7 +101,6 @@ public class ConnectivityIntentService extends IntentService {
             public void onResponse(Object response) {
                 Log.d("Request", "Turned on " + unit.getName());
                 Toast.makeText(ConnectivityIntentService.this, "Turned on " + unit.getName(), Toast.LENGTH_SHORT).show();
-                NetworkChangeReceiver.completeWakefulIntent(intent);
             }
         });
     }
@@ -119,7 +118,7 @@ public class ConnectivityIntentService extends IntentService {
                 );
 
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
+                new NotificationCompat.Builder(this, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_lightbulb_outline_dark)
                         .setContentTitle("Welcome home!")
                         .setAutoCancel(true)

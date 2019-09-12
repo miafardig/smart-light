@@ -42,7 +42,7 @@ public class AlarmActivity extends AppCompatActivity implements AdapterView.OnIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         userConfig = UserConfig.getInstance(this);
@@ -52,9 +52,9 @@ public class AlarmActivity extends AppCompatActivity implements AdapterView.OnIt
         Intent alarmIntent = new Intent(AlarmActivity.this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(AlarmActivity.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        TextView view = (TextView) findViewById(R.id.chosen_time);
+        TextView view = findViewById(R.id.chosen_time);
 
-        toggle = (Switch) findViewById(R.id.alarm_switch);
+        toggle = findViewById(R.id.alarm_switch);
         toggle.setChecked(userConfig.isAlarmOn());
         setSwitchListener();
 
@@ -92,7 +92,7 @@ public class AlarmActivity extends AppCompatActivity implements AdapterView.OnIt
 
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                Spinner spinner = (Spinner) findViewById(R.id.alarm_lamp_list);
+                Spinner spinner = findViewById(R.id.alarm_lamp_list);
 
                 spinner.setAdapter(arrayAdapter);
                 if (userConfig.getLampToSetOnAlarm() != null) {

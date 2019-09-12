@@ -40,15 +40,15 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         userConfig = UserConfig.getInstance(this);
         service = NexaService.getInstance(this);
 
-        editServer = (EditText) findViewById(R.id.edit_server);
-        editRouter = (EditText) findViewById(R.id.edit_router);
-        secondEditRouter = (EditText) findViewById(R.id.edit_router_two);
+        editServer = findViewById(R.id.edit_server);
+        editRouter = findViewById(R.id.edit_router);
+        secondEditRouter = findViewById(R.id.edit_router_two);
 
         if (userConfig.getServerURL() != null) {
             if (!userConfig.getServerURL().isEmpty()) {
@@ -89,12 +89,12 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
                 units = (List<NexaUnit>) response;
 
-                ArrayAdapter<NexaUnit> arrayAdapter = new ArrayAdapter<NexaUnit>(SettingsActivity.this,
+                ArrayAdapter<NexaUnit> arrayAdapter = new ArrayAdapter<>(SettingsActivity.this,
                         android.R.layout.simple_spinner_item, android.R.id.text1, units);
 
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                Spinner spinner = (Spinner) findViewById(R.id.lamp_list);
+                Spinner spinner = findViewById(R.id.lamp_list);
 
                 spinner.setAdapter(arrayAdapter);
                 if (userConfig.getLampToSetOnWifi() != null) {

@@ -56,7 +56,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     private void setAlarm() {
 
-        Switch toggle = (Switch) getActivity().findViewById(R.id.alarm_switch);
+        Switch toggle = getActivity().findViewById(R.id.alarm_switch);
 
         if (toggle.isChecked()) {
 

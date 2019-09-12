@@ -21,6 +21,7 @@ import java.util.List;
 public class GeofenceTransitionsIntentService extends IntentService {
 
     private List<NexaUnit> units;
+    static final String CHANNEL_ID = "GeofenceTransitionsIntentService";
 
     public GeofenceTransitionsIntentService() {
         super("GeofenceTransitionsIntentService");
@@ -109,7 +110,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 );
 
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
+                new NotificationCompat.Builder(this, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_lightbulb_outline_dark)
                         .setContentTitle("Wait!")
                         .setAutoCancel(true)

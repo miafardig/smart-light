@@ -19,6 +19,9 @@ import com.mia.smartlight.service.VolleyResponseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity shown when leaving the home zone with units still on. Shows a list with units the user might want to turn off.
+ */
 public class NotificationActivity extends AppCompatActivity {
 
     private Intent intent;
@@ -30,15 +33,15 @@ public class NotificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         service = NexaService.getInstance(this);
 
         units = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<NexaUnit>(NotificationActivity.this,
+        arrayAdapter = new ArrayAdapter<>(NotificationActivity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, units);
-        ListView listView = (ListView) findViewById(R.id.nexa_list);
+        ListView listView = findViewById(R.id.nexa_list);
         listView.setAdapter(arrayAdapter);
 
         getNexaUnits();

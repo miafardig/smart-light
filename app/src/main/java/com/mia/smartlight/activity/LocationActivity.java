@@ -19,11 +19,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.mia.smartlight.model.UserConfig;
 import com.mia.smartlight.service.GeofenceTransitionsIntentService;
 import com.mia.smartlight.R;
@@ -31,10 +32,9 @@ import com.mia.smartlight.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
+public class LocationActivity extends AppCompatActivity {
 
     private Intent intent;
-    private GoogleApiClient googleApiClient;
     private Location lastLocation;
     private Location home;
     private List<Geofence> geofences;
@@ -43,36 +43,18 @@ public class LocationActivity extends AppCompatActivity implements GoogleApiClie
     private UserConfig userConfig;
     private final int PERMISSION_CODE_1 = 1;
     private final int PERMISSION_CODE_2 = 2;
+    private FusedLocationProviderClient fusedLocationClient;
+    private GeofencingClient geofencingClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (googleApiClient == null) {
-            googleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
-
-        geofences = new ArrayList<>();
-        userConfig = UserConfig.getInstance(this);
-
-        coordinates = (TextView) findViewById(R.id.home_coordinates);
-        if (userConfig.getLatitude() != 0 && userConfig.getLongitude() != 0) {
-            coordinates.setText(userConfig.getLatitude() + ":" + userConfig.getLongitude());
-        }
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        geofencingClient = LocationServices.getGeofencingClient(this);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
@@ -81,8 +63,17 @@ public class LocationActivity extends AppCompatActivity implements GoogleApiClie
             ActivityCompat.requestPermissions(LocationActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_CODE_1);
         }
-        lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        setLastLocation();
 
+        geofences = new ArrayList<>();
+        userConfig = UserConfig.getInstance(this);
+
+        coordinates = findViewById(R.id.home_coordinates);
+        if (userConfig.getLatitude() != 0 && userConfig.getLongitude() != 0) {
+            coordinates.setText(userConfig.getLatitude() + ":" + userConfig.getLongitude());
+        }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void addGeofence(View v) {
@@ -112,11 +103,13 @@ public class LocationActivity extends AppCompatActivity implements GoogleApiClie
         userConfig.setLatitude(home.getLatitude());
         userConfig.setLongitude(home.getLongitude());
 
-        LocationServices.GeofencingApi.addGeofences(
-                googleApiClient,
-                getGeofencingRequest(),
-                getGeofencePendingIntent()
-        ).setResultCallback(this);
+        geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        showToaster();
+                    }
+                });
     }
 
     private GeofencingRequest getGeofencingRequest() {
@@ -137,15 +130,13 @@ public class LocationActivity extends AppCompatActivity implements GoogleApiClie
     }
 
     @Override
-    @SuppressWarnings({"MissingPermission"})
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_CODE_1: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-
+                    setLastLocation();
                 }
                 break;
             }
@@ -173,42 +164,36 @@ public class LocationActivity extends AppCompatActivity implements GoogleApiClie
                     userConfig.setLatitude(home.getLatitude());
                     userConfig.setLongitude(home.getLongitude());
 
-                    LocationServices.GeofencingApi.addGeofences(
-                            googleApiClient,
-                            getGeofencingRequest(),
-                            getGeofencePendingIntent()
-                    ).setResultCallback(this);
+                    geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    showToaster();
+                                }
+                            });
                 }
             }
         }
     }
 
-    @Override
-    public void onResult(@NonNull Status status) {
+    private void showToaster() {
 
         Toast.makeText(this, "Location set", Toast.LENGTH_SHORT).show();
 
         coordinates.setText(home.getLatitude() + ":" + home.getLongitude());
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    protected void onStart() {
-        googleApiClient.connect();
-        super.onStart();
-    }
-
-    protected void onStop() {
-        googleApiClient.disconnect();
-        super.onStop();
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+    private void setLastLocation() {
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations, this can be null.
+                        if (location != null) {
+                            lastLocation = location;
+                        }
+                    }
+                });
     }
 
     @Override

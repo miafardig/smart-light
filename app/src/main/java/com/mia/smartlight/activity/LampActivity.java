@@ -36,7 +36,7 @@ public class LampActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lamp);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -66,7 +66,7 @@ public class LampActivity extends AppCompatActivity {
 
     private void displayContent() {
 
-        TextView name = (TextView) findViewById(R.id.lamp_name);
+        TextView name = findViewById(R.id.lamp_name);
         name.setText(unit.getName());
 
         addStateAndDimLevel();
@@ -75,8 +75,8 @@ public class LampActivity extends AppCompatActivity {
     }
 
     private void addStateAndDimLevel() {
-        TextView level = (TextView) findViewById(R.id.lamp_level);
-        TextView state = (TextView) findViewById(R.id.lamp_state);
+        TextView level = findViewById(R.id.lamp_level);
+        TextView state = findViewById(R.id.lamp_state);
 
         for (Attribute a : attributes) {
             if (a.getName().equalsIgnoreCase("state")) {
@@ -90,8 +90,8 @@ public class LampActivity extends AppCompatActivity {
     }
 
     private void addButtons() {
-        LinearLayout buttonGroup = (LinearLayout) findViewById(R.id.button_group);
-        LinearLayout buttonGroup2 = (LinearLayout) findViewById(R.id.button_group_2);
+        LinearLayout buttonGroup = findViewById(R.id.button_group);
+        LinearLayout buttonGroup2 = findViewById(R.id.button_group_2);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((buttonGroup.getWidth()/2), ViewGroup.LayoutParams.WRAP_CONTENT);
 

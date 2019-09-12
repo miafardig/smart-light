@@ -1,37 +1,38 @@
 package com.mia.smartlight.service;
 
-import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.mia.smartlight.model.UserConfig;
-import com.mia.smartlight.receiver.AlarmReceiver;
 
-public class AlarmIntentService extends IntentService {
+public class AlarmIntentService extends JobIntentService {
 
     private UserConfig userConfig;
+    static final int JOB_ID = 1001;
 
     public AlarmIntentService() {
-        super("AlarmService");
+        super();
     }
 
-    public AlarmIntentService(String name) {
-        super(name);
+    public static void enqueueWork(Context context, Intent work) {
+        enqueueWork(context, AlarmIntentService.class, JOB_ID, work);
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-
+    protected void onHandleWork(@NonNull Intent intent) {
         Log.d("Class", "AlarmIntentService");
         Log.d("Intent", "Handling intent " + intent.toString());
 
         userConfig = UserConfig.getInstance(this);
 
-        invokeActionOnServer(intent);
+        invokeActionOnServer();
     }
 
-    private void invokeActionOnServer(final Intent intent) {
+    private void invokeActionOnServer() {
 
         final int id = userConfig.getLampToSetOnAlarm().getId();
 
@@ -44,14 +45,12 @@ public class AlarmIntentService extends IntentService {
                     } else {
                         Toast.makeText(AlarmIntentService.this, "Could not connect to server", Toast.LENGTH_SHORT).show();
                     }
-                    AlarmReceiver.completeWakefulIntent(intent);
                 }
 
                 @Override
                 public void onResponse(Object response) {
                     Log.d("Request", "Turned on unit " + id);
                     Toast.makeText(AlarmIntentService.this, "Wake up!", Toast.LENGTH_SHORT).show();
-                    AlarmReceiver.completeWakefulIntent(intent);
                 }
             });
         }

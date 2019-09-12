@@ -1,11 +1,11 @@
 package com.mia.smartlight.receiver;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,7 +15,7 @@ import com.mia.smartlight.model.UserConfig;
 import java.util.Calendar;
 
 
-public class NetworkChangeReceiver extends WakefulBroadcastReceiver {
+public class NetworkChangeReceiver extends BroadcastReceiver {
 
     private UserConfig userConfig;
 
@@ -43,7 +43,7 @@ public class NetworkChangeReceiver extends WakefulBroadcastReceiver {
                     if (connected) {
                         Log.d("Intent", "Sending intent to ConnectivityIntentService");
                         Intent service = new Intent(context, ConnectivityIntentService.class);
-                        WakefulBroadcastReceiver.startWakefulService(context, service);
+                        ConnectivityIntentService.enqueueWork(context, service);
                     }
                 }
             }
